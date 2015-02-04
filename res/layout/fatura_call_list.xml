@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/prevBtn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Anterior" />
+
+        <Button
+            android:id="@+id/nextBtn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/prevBtn"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Próximo" />
+
+        <TextView
+            android:id="@+id/refDateLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/prevBtn"
+            android:layout_alignBottom="@+id/prevBtn"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/faturaCallList_listViewCalls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <requestFocus />
+    </ListView>
+
+</LinearLayout>
