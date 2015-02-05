@@ -46,7 +46,7 @@ public class CallsView extends Fragment {
         nextBtn = (Button) rootView.findViewById(R.id.nextBtn);
         
         refDateLbl = (TextView) rootView.findViewById(R.id.refDateLbl);
-       
+ 
         nextBtn.setEnabled(false);
 
         prevBtn.setOnClickListener(new OnClickListener(){

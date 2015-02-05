@@ -2,6 +2,8 @@ package com.fatura.view.signalmap;
 
 import java.util.List;
 
+import com.fatura.R;
+import com.fatura.database.SignalDB;
 import com.fatura.model.SignalPoint;
 import com.fatura.service.ChangeLocationListener;
 import com.fatura.service.MapService;
@@ -32,11 +34,11 @@ public class SignalMap extends FragmentActivity implements OnMapReadyCallback, C
 	private final double INIT_LONG = -47.9292;
 
 	private SupportMapFragment fragment;
+	private SignalDB db;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         fragment = new SupportMapFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(android.R.id.content, fragment).commit();
@@ -44,17 +46,28 @@ public class SignalMap extends FragmentActivity implements OnMapReadyCallback, C
         
         googleMap = null;
         this.getActionBar().setTitle("Mapa de Sinal");
+        db = new SignalDB(this);
     }
 
 	@Override
 	public void onMapReady(GoogleMap map) {
         googleMap = map;
-        
-        CameraUpdate centerView = CameraUpdateFactory.newLatLng(new LatLng(INIT_LAT, INIT_LONG));
-        CameraUpdate zoomView = CameraUpdateFactory.zoomTo(18);
+        List<SignalPoint> mapSignals = db.getSignalPoints();
+        CameraUpdate centerView;
+        CameraUpdate zoomView;
+
+        if(mapSignals != null && mapSignals.size() > 0){
+        	Location lastLoc = mapSignals.get(mapSignals.size() - 1).getLocation();
+        	centerView = CameraUpdateFactory.newLatLng(new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude()));
+        	zoomView = CameraUpdateFactory.zoomTo(18);
+        }else{
+        	centerView = CameraUpdateFactory.newLatLng(new LatLng(INIT_LAT, INIT_LONG));
+        	zoomView = CameraUpdateFactory.zoomTo(18);
+        }
+
         googleMap.moveCamera(centerView);
         googleMap.animateCamera(zoomView);
-        
+
     	List<SignalPoint> signalMapService = mapService.getSignalMap();
     	drawAreas(signalMapService);
 	}
@@ -87,11 +100,11 @@ public class SignalMap extends FragmentActivity implements OnMapReadyCallback, C
     	for(SignalPoint point: map){
     		getActionBar().setTitle("Potencia: " + point.getStrength());
     		if(point.getStrength() <= 10)
-    			color = Color.argb(50, 255, 0, 0);
+    			color = Color.argb(40, 255, 0, 0);
     		else if(point.getStrength() <= 20){
-    			color = Color.argb(50, 168, 168, 0);
+    			color = Color.argb(40, 168, 168, 0);
     		}else if(point.getStrength() <= 31){
-    			color = Color.argb(50, 0, 255, 0);
+    			color = Color.argb(40, 0, 255, 0);
     		}else{
     			return; //99
     		}

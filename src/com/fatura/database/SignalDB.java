@@ -92,4 +92,10 @@ public class SignalDB extends SQLiteOpenHelper{
 
 		db.close();
 	}
+	
+	public void deleteSignalPoints(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.rawQuery("DELETE FROM " + this.TABLE_SIGNAL, null);
+		db.close();
+	}
 }
