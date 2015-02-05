@@ -81,10 +81,10 @@ public class CallDB extends SQLiteOpenHelper{
 	
 	public Call getLastCall(){
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("SELECT " + CALL_ID + " FROM " +  CREATE_TABLE_CALLS + " order by " + CALL_ID + " DESC LIMIT 1", null);
+		Cursor cursor = db.rawQuery("SELECT * FROM " +  TABLE_CALLS + " order by " + CALL_ID + " DESC LIMIT 1", null);
 		Call call = null;
 
-		if(cursor.moveToLast()){
+		if(cursor.moveToFirst()){
         	call = new Call();
         	call.setFrom(new PhoneNumber(cursor.getString(cursor.getColumnIndex(CALL_FROM))));
         	call.setTo(new PhoneNumber(cursor.getString(cursor.getColumnIndex(CALL_TO))));

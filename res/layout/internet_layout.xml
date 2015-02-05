@@ -1,13 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <ListView
-        android:id="@+id/internet_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="20dp"
+        android:text="Use de Dados (Total):"
+        android:textSize="20sp" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/kbTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/nameTextView"
+        android:layout_alignBottom="@+id/nameTextView"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="24dp"
+        android:text="200 Kb"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txTitlePerApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nameTextView"
+        android:layout_below="@+id/nameTextView"
+        android:layout_marginTop="36dp"
+        android:text="Por Aplicativo"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txTitlePerApp"
+        android:layout_below="@+id/txTitlePerApp"
+        android:layout_marginTop="33dp"
+        android:textSize="18sp"
+        android:text="Facebook" />
+
+    <TextView
+        android:id="@+id/txKbFace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txFacebook"
+        android:layout_alignBottom="@+id/txFacebook"
+        android:layout_alignLeft="@+id/kbTextView"
+        android:text="-----"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txWhats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txFacebook"
+        android:layout_below="@+id/txFacebook"
+        android:layout_marginTop="22dp"
+        android:text="Whatsapp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txKbWhats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txWhats"
+        android:layout_alignBottom="@+id/txWhats"
+        android:layout_alignLeft="@+id/txKbFace"
+        android:text="-----"
+        android:textSize="18sp" />
+
+</RelativeLayout>

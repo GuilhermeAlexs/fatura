@@ -24,6 +24,7 @@ import android.os.IBinder;
 import android.provider.CallLog;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.fatura.database.CallDB;
 import com.fatura.database.CarrierCacheDB;
@@ -45,17 +46,19 @@ public class CallService extends Service{
     	callDB = new CallDB(this);
     	carrierCacheDB = new CarrierCacheDB(this);
     	carrierLookupDB = new CarrierLookupDB(this);
-    	Call lastCallFromDB = callDB.getLastCall();
-    	Call lastCallFromSys = getLastCall();
-  
-    	if(lastCallFromDB.getDate() != lastCallFromSys.getDate() &&
-    	   lastCallFromDB.getTo() != lastCallFromSys.getTo()){
-    		callDB.insertCall(lastCallFromSys);
-    	}
+//    	Call lastCallFromDB = callDB.getLastCall();
+//    	Call lastCallFromSys = getLastCall();
+//
+//    	if(lastCallFromDB != null){
+//	    	if(lastCallFromDB.getDate() != lastCallFromSys.getDate() &&
+//	    	   lastCallFromDB.getTo() != lastCallFromSys.getTo()){
+//	    		callDB.insertCall(lastCallFromSys);
+//	    	}
+//    	}
 
     	if(telListener == null){
 	    	telListener = new TeleListener();
-	
+
 	    	TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 	    	TelephonyMgr.listen(telListener, PhoneStateListener.LISTEN_CALL_STATE);
     	}
@@ -73,11 +76,10 @@ public class CallService extends Service{
         Call lastCall = null;
 
         if(managedCursor.moveToNext()){
-        	//Log.d("getLastCall()", "EXISTE RESULTADO!");
             type = managedCursor.getInt(managedCursor.getColumnIndex(CallLog.Calls.TYPE));
-
+            
         	if(type == CallLog.Calls.OUTGOING_TYPE){
-        		//Log.d("getLastCall()","OUTGOING_TYPE");
+        		Log.d("CallService","Última ligação existe!");
             	String callDate = managedCursor.getString(managedCursor.getColumnIndex(CallLog.Calls.DATE));
         		String phNumber = managedCursor.getString(managedCursor.getColumnIndex(CallLog.Calls.NUMBER));
             	String callDuration = managedCursor.getString(managedCursor.getColumnIndex(CallLog.Calls.DURATION));
@@ -103,12 +105,15 @@ public class CallService extends Service{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+            	
 
             	if(phTo.isCollectNumber() || phTo.isFreeBusinessNumber() || lastCall.getDuration() == 0)
             		return null;
 
             	lastCall.setTo(phTo);
             	lastCall.setFrom(Session.getInstance().getUser().getPhoneNumber());
+
+            	Log.d("CallService", "TO: " + lastCall.getTo().getDDD() + " " + lastCall.getTo().getCoreNumber());
         	}
         }
 
@@ -127,6 +132,7 @@ public class CallService extends Service{
     }
     
     public Carrier getCarrierFromWebservice(PhoneNumber phone) throws IllegalStateException, IOException{
+    	Log.d("CallService", "Obtendo Operadora do webservice");
         HttpClient httpclient = new DefaultHttpClient();
         HttpResponse response = httpclient.execute(new HttpGet(WEBSERVICE_URL + phone.getDDD() + phone.getCoreNumber()));
         StatusLine statusLine = response.getStatusLine();
@@ -169,14 +175,15 @@ public class CallService extends Service{
 		      case TelephonyManager.CALL_STATE_IDLE:
 		    	 if(!wasOffHook)
 		    		 break;
-		    	 //Log.d("LISTENER", "IDLE");
+		    	 Log.d("CallService", "IDLE");
 		    	 wasOffHook = false;
 		    	 new CarrierRequester().execute(wasRoaming);
 		         break;
 		      case TelephonyManager.CALL_STATE_OFFHOOK:
 		    	 if(wasOffHook)
 		    		 break;
-		    	 //Log.d("LISTENER", "OFFHOOK");
+
+		    	 Log.d("CallService", "OFFHOOK");
 				 ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 				 NetworkInfo ni = cm.getActiveNetworkInfo();
 
@@ -197,19 +204,21 @@ public class CallService extends Service{
     	}
 
         protected Call doInBackground(Boolean... roaming) {
-	    	Call lastCall = getLastCall();
-	    	try {
-				Thread.sleep(1000);
+        	try {
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	    	Call lastCall = getLastCall();
+
 	    	if(lastCall == null){
-	    		//Log.d("doInBackground", "lastCall == null!");
+	    		Log.d("CallService", "lastCall == null!");
 	    		return null;
 	    	}
 	    	lastCall.setRoaming(roaming[0]);
 	    	callDB.insertCall(lastCall);
-
+	    	Log.d("CallService", "Ligação inserida no Banco de Dados");
 	    	return lastCall;
         }
     }

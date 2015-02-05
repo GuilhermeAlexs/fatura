@@ -9,6 +9,7 @@ import com.fatura.service.MapService;
 import com.fatura.service.MapService.LocalBinder;
 import com.fatura.view.fatura.FaturaView;
 import com.fatura.view.signalmap.SignalMap;
+
 import android.support.v7.app.ActionBarActivity;
 import android.content.ComponentName;
 import android.content.Context;

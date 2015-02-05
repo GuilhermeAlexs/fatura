@@ -6,6 +6,7 @@ import java.util.List;
 import com.fatura.R;
 
 import android.content.Context;
+import android.net.TrafficStats;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,10 @@ public class InternetListAdapter extends ArrayAdapter<String>{
 		}else{
 			holder = (ViewHolder) convertView.getTag();
 		}
+		
 
+	//	holder.appName.setText("Uso de Dados Total(Mobile)");
+		//holder.appSize.setText("" + (TrafficStats.getMobileRxBytes() + TrafficStats.getMobileTxBytes()));
 //		Call c = calls.get(position);
 //		
 //		if(c != null){

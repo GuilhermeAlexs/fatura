@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import com.fatura.R;
 import com.fatura.model.CallService;
 import com.fatura.model.Session;
+import com.fatura.model.plan.ClaroPreTodaHora;
 import com.fatura.model.plan.Plan;
 import com.fatura.model.plan.TimLibertyPlan;
 import com.fatura.model.CallService.LocalBinder;
@@ -93,7 +94,7 @@ public class CallsView extends Fragment {
     }
     
     private void updateList(){
-        Plan plan = new TimLibertyPlan();
+        Plan plan = new ClaroPreTodaHora();
 
         DateTime currDate = new DateTime();
         DateTime oldBillingDate;

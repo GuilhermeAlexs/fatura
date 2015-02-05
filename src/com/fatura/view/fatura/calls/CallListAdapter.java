@@ -64,7 +64,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 			holder.lblTo.setText(c.getTo().getFullNumber());
 			holder.lblDate.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(c.getDate()));
 			holder.lblDuration.setText(((int)c.getDuration()) + " s");
-			holder.lblPrice.setText("R$" + String.format("%.2f",c.getPrice()));
+			holder.lblPrice.setText("R$" + String.format("%.3f",c.getPrice()));
 		}
 		return convertView;
 	}
